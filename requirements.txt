@@ -7,4 +7,6 @@ speechbrain==0.5.16
 streamlit==1.44.1
 torch
 torchaudio
+torchvision
 yt_dlp==2025.5.22
+transformers==4.49.0
