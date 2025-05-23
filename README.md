@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 # How to run/use this app
 
-1. On your anaconda, run this syntax: `streamlit run app_2.py`
+1. On your anaconda, run this syntax: `streamlit run app.py`
 2. After you run it, your default browser will open a streamlit UI like the image below :
 
 ![Screenshot 2025-05-23 084751](https://github.com/user-attachments/assets/586dfaef-662c-40b7-acce-4a023e9ccfc6)
