@@ -123,14 +123,12 @@ st.title("Accent Classifier for English Speakers")
 
 with st.form("Input your video (it can be video link or upload)"):
     video_url = st.text_input(
-        "Enter video URL (YouTube, Loom, or .mp4)",
-        disabled=st.session_state.processing
+        "Enter video URL (YouTube, Loom, or .mp4)"
     )
 
     uploaded_file = st.file_uploader(
         "Or upload a video file (mp4, mov, or mkv)",
-        type=["mp4", "mov", "avi"],
-        disabled=st.session_state.processing
+        type=["mp4", "mov", "avi"]
     )
 
     if st.form_submit_button("Process"):
