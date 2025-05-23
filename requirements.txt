@@ -10,3 +10,5 @@ torchaudio
 torchvision
 yt_dlp==2025.5.22
 transformers==4.49.0
+ffmpeg-python>=0.2.0
+huggingface-hub==0.28.1
