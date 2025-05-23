@@ -33,3 +33,9 @@ pip install -r requirements.txt
 4. Click process button and wait until the output show like below image (I'm still a newbie on streamlit, so when the "system" is predicting the accent of the video, you can still enter another input and click process, this should be disabled while the process is still running but I don't know how yet)
 
 ![Screenshot 2025-05-23 085147](https://github.com/user-attachments/assets/8e85514b-56ed-4012-aefc-404c1f3d6313)
+
+# Flow of this app
+1. After the app receives your video or video link and you click process, the video will be processed. If it's the video link, it will be downloaded and saved in the temp folder
+2. Extract audio from the video, detect the non-silent part of the video, and get 10 seconds of it. I only take 10 seconds for the speed of detection. If we classify all of the voices from the video, it will depend on the video length.
+3. Send the audio to speech accent model, i use this model : https://huggingface.co/Jzuluaga/accent-id-commonaccent_xlsr-en-english
+4. Give the output (an accent and the confidence score)
