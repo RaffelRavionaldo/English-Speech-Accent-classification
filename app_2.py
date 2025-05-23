@@ -53,9 +53,14 @@ def download_youtube_audio(url):
             'preferredcodec': 'wav',
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            audio_path = ydl.prepare_filename(info).replace('.webm', '.wav').replace('.m4a', '.wav')
-        return audio_path
+            ydl.download([url])
+
+        audioclip = AudioFileClip("yt_audio.mp3")
+        wav_path = "output.wav"
+        audioclip.write_audiofile(wav_path, logger=None)
+        audioclip.close()
+        os.remove(f"{TEMP_DIR}/yt_audio.mp3")
+        return wav_path
     except Exception as e:
         raise RuntimeError(f"YouTube download failed: {str(e)}")
 
@@ -81,31 +86,33 @@ def extract_audio(video_path):
         raise RuntimeError(f"Audio extraction failed: {str(e)}")
 
 def get_speech_segments(audio_path, min_silence_len=700, silence_thresh=-40, duration=10000):
-    try:
-        audio = AudioSegment.from_wav(audio_path)
-        nonsilent_ranges = AudioSegment.silent.detect_nonsilent(
-            audio,
-            min_silence_len=min_silence_len,
-            silence_thresh=silence_thresh
-        )
-        
-        if not nonsilent_ranges:
-            raise RuntimeError("No speech segments detected")
-            
-        start_ms = nonsilent_ranges[0][0]
-        end_ms = min(start_ms + duration, len(audio))
-        segment = audio[start_ms:end_ms]
-        
-        segment_path = os.path.join(TEMP_DIR, "temp_segment.wav")
-        segment.export(segment_path, format="wav")
-        return segment_path
-    except Exception as e:
-        raise RuntimeError(f"Speech detection failed: {str(e)}")
+    """
+    Get speech segments with absolute position
+    Detects non-silent parts in audio with precise timing
+    """
+    audio = AudioSegment.from_wav(audio_path)
+    total_duration = len(audio)
+
+    nonsilent_ranges = detect_nonsilent(
+        audio,
+        min_silence_len=min_silence_len,
+        silence_thresh=silence_thresh
+    )
+
+    start_ms, original_end_ms = nonsilent_ranges[0]
+    end_ms = min(start_ms + duration, total_duration)
+
+    segment = audio[start_ms:end_ms]
+    temp_path = "temp_first_segment.wav"
+    segment.export(temp_path, format="wav")
+
+    return temp_path
 
 def classify_audio(wav_path):
     try:
         segment_path = get_speech_segments(wav_path)
         out_prob, score, index, label = classifier.classify_file(segment_path)
+        os.remove(segment_path)
         return label[0], float(score[0]) * 100
     except Exception as e:
         raise RuntimeError(f"Classification failed: {str(e)}")
