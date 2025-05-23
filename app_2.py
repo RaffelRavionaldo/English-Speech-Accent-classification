@@ -49,10 +49,14 @@ def download_youtube_audio(url):
     try:
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': os.path.join(TEMP_DIR, 'yt_audio.%(ext)s'),
+            'outtmpl': 'yt_audio.%(ext)s',
             'quiet': True,
             'extract_audio': True,
-            'preferredcodec': 'wav',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '64',
+            }],
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
@@ -61,7 +65,7 @@ def download_youtube_audio(url):
         wav_path = "output.wav"
         audioclip.write_audiofile(wav_path, logger=None)
         audioclip.close()
-        os.remove(f"{TEMP_DIR}/yt_audio.mp3")
+        os.remove("yt_audio.mp3")
         return wav_path
     except Exception as e:
         raise RuntimeError(f"YouTube download failed: {str(e)}")
