@@ -4,6 +4,6 @@ pytube==15.0.0
 Requests==2.32.3
 speechbrain==0.5.16
 streamlit==1.44.1
-torch==2.6.0+cu124
-torchaudio==2.6.0+cu124
+torch
+torchaudio
 yt_dlp==2025.5.22
