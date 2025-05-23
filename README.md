@@ -4,6 +4,8 @@ Using speechbrain models for detecting English speaker accent
 # How to install
 I use Windows 11, Anaconda, Python 3.11, and PyTorch 2.6.0+cu12.4. You can use other PyTorch versions according to your CUDA version, read this https://pytorch.org/get-started/locally/
 
+and before install it, first you need to install the ffmepg too, you can download it via this link : https://ffmpeg.org/download.html
+
 ```
 #create venv in anaconda
 conda create --name speech_accent python=3.11
