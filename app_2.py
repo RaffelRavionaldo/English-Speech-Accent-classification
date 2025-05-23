@@ -6,7 +6,9 @@ import urllib.request
 from urllib.parse import urlparse
 import yt_dlp
 from pydub import AudioSegment
+from pydub.silence import detect_nonsilent
 from speechbrain.pretrained.interfaces import foreign_class
+from moviepy import VideoFileClip, AudioFileClip
 
 # Constants
 TEMP_DIR = "/tmp"  # Streamlit Cloud only allows writing to /tmp
